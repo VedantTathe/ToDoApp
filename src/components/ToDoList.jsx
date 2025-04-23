@@ -3,10 +3,6 @@ import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 
 const TodoList = () => {
   // Load tasks from localStorage on mount
-  const [tasks, setTasks] = useState(() => {
-    const savedTasks = localStorage.getItem("tasks");
-    return savedTasks ? JSON.parse(savedTasks) : [];
-  });
 
   const [task, setTask] = useState("");
 
@@ -15,25 +11,11 @@ const TodoList = () => {
     localStorage.setItem("tasks", JSON.stringify(tasks));
   }, [tasks]);
 
-  const addTask = () => {
-    if (task.trim() !== "") {
-      const newTask = { id: Date.now().toString(), text: task };
-      setTasks((prevTasks) => [...prevTasks, newTask]);
-      setTask("");
-    }
-  };
 
   const deleteTask = (id) => {
     setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
   };
 
-  const handleDragEnd = (result) => {
-    if (!result.destination) return;
-    const newTasks = Array.from(tasks);
-    const [movedTask] = newTasks.splice(result.source.index, 1);
-    newTasks.splice(result.destination.index, 0, movedTask);
-    setTasks(newTasks);
-  };
 
   return (
     <div className="max-w-lg mx-auto mt-10 p-6 rounded-xl shadow-lg bg-white/80 backdrop-blur-md dark:bg-gray-800 transition">
